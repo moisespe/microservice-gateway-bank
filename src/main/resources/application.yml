@@ -1,0 +1,102 @@
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#      - id: service-product
+#        uri: lb://service-product
+#        predicates:
+#          - Path=/api/productos/**
+#        filters:
+#          - StripPrefix=2
+
+#server:
+#  port: 9950
+#  
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+#
+#resilience4j:
+#  circuitbreaker:
+#    configs:
+#      deafult:
+#        sliding-window-size: 10
+#        failure-rate-threshold: 50
+#        wait-duration-in-open-state: 10s
+#        permitted-number-of-calls-in-half-open-state: 5
+#        sliding-window-type: time-based
+#        minimum-number-of-calls: 4
+#    instances:
+#      defaultCircuit:
+#        base-config: deafult
+#  timelimiter:
+#    configs:
+#      deafult:
+#        timeout-duration: 2s
+#    instances:
+#      defaultCircuit:
+#        base-config: deafult
+#        
+#        
+#spring:
+#  application:
+#    name: service-gateway-server
+#  cloud:
+#    gateway:
+#      routes:
+#      - id: service-product
+#        uri: lb://service-customer
+#        predicates:
+#          - Path=/api/customer/**
+#        filters:
+#          - name: CircuitBreaker
+#            args:
+#              name: defaultCircuit
+#              statusCodes: 500
+#              fallbackUri: forward:http://localhost:9950/fallback
+#         
+#      - id: service-account
+#        uri: lb://service-account
+#        predicates:
+#          - Path=/api/account/**
+#        filters:
+#          - name: CircuitBreaker
+#            args:
+#              name: defaultCircuit
+#              statusCodes: 500
+#              fallbackUri: forward:http://localhost:9950/fallback
+#              
+#      - id: service-person
+#        uri: lb://service-person
+#        predicates:
+#          - Path=/api/person/**
+#        filters:
+#          - name: CircuitBreaker
+#            args:
+#              name: defaultCircuit
+#              statusCodes: 500
+#              fallbackUri: forward:http://localhost:9950/fallback
+#              
+#      - id: service-transaction
+#        uri: lb://service-transaction
+#        predicates:
+#          - Path=/api/transaction/**
+#        filters:
+#          - name: CircuitBreaker
+#            args:
+#              name: defaultCircuit
+#              statusCodes: 500
+#              fallbackUri: forward:http://localhost:9950/fallback
+#          - StripPrefix=2
+#              
+#      - id: service-product
+#        uri: lb://service-product
+#        predicates:
+#          - Path=/api/product/**
+#        filters:
+#          - name: CircuitBreaker
+#            args:
+#              name: defaultCircuit
+#              statusCodes: 500
+#              fallbackUri: forward:http://localhost:9950/fallback
